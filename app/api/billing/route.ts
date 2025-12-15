@@ -6,7 +6,7 @@ export async function POST() {
 
   if (credits >= 100) {
     return Response.json({
-      flag: "FLAG{business_logic_is_security}",
+      flag: "FLAG{bus1n3ss_l0gic_iS_s3cur1ty}",
     });
   }
 
