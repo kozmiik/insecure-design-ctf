@@ -28,9 +28,14 @@ async function applyReferral() {
      
   ------------------------------ */
   async function upgradeInfo() {
-  setStatus(
-    "Upgrade to Pro to unlock advanced analytics, priority billing, and enterprise support."
-  );
+  try {
+    const res = await fetch("/api/account"); // legitimate API call
+    const data = await res.json();
+    setStatus(JSON.stringify(data, null, 2));
+  } catch (err) {
+    console.error(err);
+    setStatus("Error fetching account status");
+  }
 }
 
   /* -----------------------------
