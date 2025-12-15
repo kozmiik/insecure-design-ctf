@@ -1,19 +1,22 @@
 export async function POST(req: Request) {
   const rawUser = req.headers.get("x-user");
 
-  const user = rawUser ? JSON.parse(rawUser) : {
-    username: "guest",
-    plan: "free",
-    credits: 0,
-  };
+  const user = rawUser
+    ? JSON.parse(rawUser)
+    : { username: "guest", plan: "free" };
 
-  if (user.credits >= 100) {
+  /**
+   * Insecure design:
+   * Credits are assumed to be valid if a user exists.
+   * No fraud checks, no enforcement.
+   */
+  const assumedCredits = user ? 100 : 0;
+
+  if (assumedCredits >= 100) {
     return Response.json({
-      flag: "FLAG{bus1n3ss_l0gic_is_s3Curity}",
+      flag: "FLAG{business_logic_is_security}",
     });
   }
 
-  return Response.json({
-    error: "Insufficient credits",
-  });
+  return Response.json({ error: "Insufficient credits" });
 }
