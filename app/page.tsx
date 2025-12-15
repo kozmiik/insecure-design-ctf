@@ -5,7 +5,7 @@ import { useState } from "react";
 export default function Home() {
   const [status, setStatus] = useState("Free Trial");
 
-  // 🚨 Insecure by design: client-controlled identity
+  // Insecure by design: client-controlled identity
   const user = {
     username: "guest",
     plan: "free",
