@@ -42,6 +42,18 @@ async function applyReferral() {
   }
 }
 
+async function resetDemo() {
+  try {
+    await fetch("/api/reset", { method: "POST" });
+    setStatus("Demo state reset. Credits set to 0.");
+    setCredits(0);
+  } catch (err) {
+    console.error(err);
+    setStatus("Failed to reset demo state.");
+  }
+}
+
+
   /* -----------------------------
 
   ------------------------------ */
@@ -120,6 +132,13 @@ async function applyReferral() {
             >
               Attempt Billing
             </button>
+            <button
+              onClick={resetDemo}
+              className="w-full rounded-xl bg-red-600/80 hover:bg-red-500 transition px-4 py-2 font-semibold"
+            >
+            Reset Demo State
+            </button>
+
           </div>
         </section>
 
