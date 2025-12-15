@@ -1,21 +1,12 @@
-import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
+import { getUser, setUser } from "@/app/lib/userStore";
 
 export async function POST() {
-  const cookieStore = cookies();
+  const user = await getUser();
 
-  const currentCredits = Number((await cookieStore).get("credits")?.value || 0);
-  const newCredits = currentCredits + 10;
+  user.credits += 10;
 
-  (await
-        // Insecure design: no referral limit, no abuse detection
-        cookieStore).set("credits", newCredits.toString(), {
-    httpOnly: true,
-    sameSite: "lax",
-    path: "/",
-  });
+  await setUser(user);
 
-  return Response.json({
-    message: "Referral applied",
-    credits: newCredits,
-  });
+  return NextResponse.json({ credits: user.credits });
 }

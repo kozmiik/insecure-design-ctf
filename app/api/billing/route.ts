@@ -1,17 +1,16 @@
-import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
+import { getUser } from "@/app/lib/userStore";
 
 export async function POST() {
-  const cookieStore = cookies();
-  const credits = Number((await cookieStore).get("credits")?.value || 0);
+  const user = await getUser();
 
-  if (credits >= 100) {
-    return Response.json({
-      flag: "FLAG{bus1n3ss_l0gic_iS_s3cur1ty}",
+  if (user.credits >= 100) {
+    return NextResponse.json({
+      flag: "FLAG{bus1n3ss_l0gic_is_s3cur1ty}"
     });
   }
 
-  return Response.json({
-    error: "Insufficient credits",
-    currentCredits: credits,
+  return NextResponse.json({
+    error: "Not enough credits"
   });
 }
