@@ -29,12 +29,16 @@ async function applyReferral() {
   ------------------------------ */
   async function upgradeInfo() {
   try {
-    const res = await fetch("/api/account"); // legitimate API call
-    const data = await res.json();
-    setStatus(JSON.stringify(data, null, 2));
+    // Make the request so it appears in Network tab
+    await fetch("/api/account");
+
+    // UI shows only a generic message
+    setStatus(
+      "Pro plans unlock advanced analytics, higher limits, and priority support."
+    );
   } catch (err) {
     console.error(err);
-    setStatus("Error fetching account status");
+    setStatus("Unable to load account information.");
   }
 }
 
