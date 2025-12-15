@@ -9,12 +9,20 @@ export default function Home() {
   /* -----------------------------
      Apply referral (intended abuse)
   ------------------------------ */
-  async function applyReferral() {
-    const res = await fetch("/api/referral", { method: "POST" });
-    const data = await res.json();
-    setCredits(data.credits);
-    setStatus("Referral applied (+10 credits)");
+  const [referralUsed, setReferralUsed] = useState(false);
+
+async function applyReferral() {
+  if (referralUsed) {
+    setStatus("Referral already applied.");
+    return;
   }
+
+  const res = await fetch("/api/referral", { method: "POST" });
+  const data = await res.json();
+
+  setCredits(data.credits);
+  setReferralUsed(true);
+}
 
   /* -----------------------------
      
