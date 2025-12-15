@@ -19,19 +19,11 @@ export default function Home() {
   /* -----------------------------
      
   ------------------------------ */
-  async function checkPro() {
-    const res = await fetch("/api/account", {
-      headers: {
-        "x-user": JSON.stringify({
-          username: "guest",
-          plan: "pro",
-        }),
-      },
-    });
-
-    const data = await res.json();
-    setStatus(JSON.stringify(data, null, 2));
-  }
+  async function upgradeInfo() {
+  setStatus(
+    "Upgrade to Pro to unlock advanced analytics, priority billing, and enterprise support."
+  );
+}
 
   /* -----------------------------
 
@@ -99,7 +91,7 @@ export default function Home() {
             <h2 className="text-xl font-semibold">Account Actions</h2>
 
             <button
-              onClick={checkPro}
+              onClick={upgradeInfo}
               className="w-full rounded-xl bg-cyan-600 hover:bg-cyan-500 transition px-4 py-2 font-semibold"
             >
               Upgrade to Pro
