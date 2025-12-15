@@ -1,11 +1,21 @@
-// /api/referral
-export async function POST(req: Request) {
-  const { referrer } = await req.json();
+import { cookies } from "next/headers";
 
-  // Intended rule:
-  // "Each user can only be referred once"
+export async function POST() {
+  const cookieStore = cookies();
+
+  const currentCredits = Number((await cookieStore).get("credits")?.value || 0);
+  const newCredits = currentCredits + 10;
+
+  (await
+        // Insecure design: no referral limit, no abuse detection
+        cookieStore).set("credits", newCredits.toString(), {
+    httpOnly: true,
+    sameSite: "lax",
+    path: "/",
+  });
+
   return Response.json({
-    creditsAdded: 10,
-    message: `Referral applied for ${referrer}`,
+    message: "Referral applied",
+    credits: newCredits,
   });
 }

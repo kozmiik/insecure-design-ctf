@@ -1,22 +1,17 @@
-export async function POST(req: Request) {
-  const rawUser = req.headers.get("x-user");
+import { cookies } from "next/headers";
 
-  const user = rawUser
-    ? JSON.parse(rawUser)
-    : { username: "guest", plan: "free" };
+export async function POST() {
+  const cookieStore = cookies();
+  const credits = Number((await cookieStore).get("credits")?.value || 0);
 
-  /**
-   * Insecure design:
-   * Credits are assumed to be valid if a user exists.
-   * No fraud checks, no enforcement.
-   */
-  const assumedCredits = user ? 100 : 0;
-
-  if (assumedCredits >= 100) {
+  if (credits >= 100) {
     return Response.json({
       flag: "FLAG{business_logic_is_security}",
     });
   }
 
-  return Response.json({ error: "Insufficient credits" });
+  return Response.json({
+    error: "Insufficient credits",
+    currentCredits: credits,
+  });
 }
